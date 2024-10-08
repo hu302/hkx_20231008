@@ -1,67 +1,67 @@
-＜！DOCTYPE html >
-<html 朗=" ' ">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta 字符集=“utf - 8”>
+    <meta charset="UTF-8">
     <title>自动售货</title>
 </head>
 <body>
 <script>
-  让 Product = 函数 (name, price, stock) {
-    这.名字 = name;
-    这.价格 = price;
-    这.股票 = stock;
-    这.addStock = 函数(quantity) {
-      这.股票 += quantity;
+  let Product = function (name, price, stock) {
+    this.name = name;
+    this.price = price;
+    this.stock = stock;
+    this.addStock = function(quantity) {
+      this.stock += quantity;
     }
-    这.显示 = 函数(){
-      document.写(`${这.名字}, ${这.价格}元, ${这.股票}件`+“< br >”);
+    this.show = function(){
+      document.write(`${this.name}, ${this.price}元, ${this.stock}件`+'<br>');
     }
   }
 
-  让 SellingMachine = 函数 () {
-    这.产品 = [
-      新 Product('水', 2, 10),
-      新 Product('可乐', 3, 10),
-      新 Product('牛奶', 5, 10),
+  let SellingMachine = function () {
+    this.products = [
+      new Product('水', 2, 10),
+      new Product('可乐', 3, 10),
+      new Product('牛奶', 5, 10),
     ];
-    这.列表 = 函数() {
-      document.写(`销售以下商品：`+“< br >”);
-      这.产品.forEach(m => m.显示());
+    this.list = function() {
+      document.write(`销售以下商品：`+'<br>');
+      this.products.forEach(m => m.show());
     }
-    这.replenishment = 函数(name, quantity){
-      如果 (quantity <= 0) {
-        throw 新 Error('quantity必须大于0');
+    this.replenishment = function(name, quantity){
+      if (quantity <= 0) {
+        throw new Error('quantity必须大于0');
       }
-      const product = 这.产品.find(x => x.名字 == name);
-      如果 (product === undefined) {
-       document.写(`不销售${name}`+“< br >”);
-        返回;
+      const product = this.products.find(x => x.name == name);
+      if (product === undefined) {
+       document.write(`不销售${name}`+'<br>');
+        return;
       }
       product.addStock(quantity);
-     document.写(`补货成功，${product.名字}剩余${product.股票}件`+"<br>");
+     document.write(`补货成功，${product.name}剩余${product.stock}件`+"<br>");
     }
-    这.sell = 函数(name, quantity, money) {
-      const product = 这.products.find(x => x.名字 == name);
-      如果 (product === undefined) {
-       document.写(`不销售${name}`+"<br>");
-        返回;
+    this.sell = function(name, quantity, money) {
+      const product = this.products.find(x => x.name == name);
+      if (product === undefined) {
+       document.write(`不销售${name}`+"<br>");
+        return;
       }
 
-      如果 (product.股票 < quantity) {
-        document.写(`库存不足，${product.名字} 仅剩 ${product.股票} 件`+"<br>");
-        返回;
+      if (product.stock < quantity) {
+        document.write(`库存不足，${product.name} 仅剩 ${product.stock} 件`+"<br>");
+        return;
       }
 
-      const totalPrice = quantity * product.价格;
-      如果 (money < totalPrice) {
-        document.写(`金额不足，${name} ${quantity}件应付￥${totalPrice}`+"<br>");
-        返回;
+      const totalPrice = quantity * product.price;
+      if (money < totalPrice) {
+        document.write(`金额不足，${name} ${quantity}件应付￥${totalPrice}`+"<br>");
+        return;
       }
 
       product.addStock(-quantity);
       const rest = money - totalPrice;
-      document.写(`成功购买商品：${name}, ${quantity}件, 共${totalPrice}元，请取走您的商品。${rest>0?`以及零钱${rest}元。`:''}`+"<br>");
-      返回 rest;
+      document.write(`成功购买商品：${name}, ${quantity}件, 共${totalPrice}元，请取走您的商品。${rest>0?`以及零钱${rest}元。`:''}`+"<br>");
+      return rest;
     }
   }
 
